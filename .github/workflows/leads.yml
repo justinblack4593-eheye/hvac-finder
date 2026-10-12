@@ -22,6 +22,7 @@ jobs:
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
       - name: Save seen list
         run: |
+          if [ ! -f seen_garfield.json ]; then echo "Nothing to save"; exit 0; fi
           git config user.name "lead-bot"
           git config user.email "lead-bot@users.noreply.github.com"
           git add seen_garfield.json
