@@ -1,0 +1,29 @@
+name: HVAC lead finder
+on:
+  schedule:
+    - cron: "0 12 * * 1,4"   # Mon & Thu, 8am Eastern
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests beautifulsoup4 pymupdf
+      - run: python garfield_agendas.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      - name: Save seen list
+        run: |
+          git config user.name "lead-bot"
+          git config user.email "lead-bot@users.noreply.github.com"
+          git add seen_garfield.json
+          git commit -m "Update seen agendas" || echo "No changes"
+          git push
