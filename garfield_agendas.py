@@ -1,5 +1,5 @@
 """
-Step 3: Garfield Township agendas + handouts -> Claude lead cards -> email.
+Garfield Township agendas + handouts -> Claude lead cards -> email.
 """
 import json
 import os
@@ -9,7 +9,7 @@ from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import urljoin
 
-import fitz  # PyMuPDF
+import pymupdf
 import requests
 from bs4 import BeautifulSoup
 
@@ -27,7 +27,12 @@ SEEN_FILE = Path("seen_garfield.json")
 PDF_DIR = Path("pdfs")
 MAX_NEW_PER_RUN = 3
 MAX_CHARS = 200_000
-HEADERS = {"User-Agent": "Mozilla/5.0 (lead-finder learning project)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                  "(KHTML, like Gecko) Chrome/129.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+}
 
 PROMPT = """You are a lead analyst for a commercial HVAC contractor in Grand Traverse County, Michigan.
 Below is a township planning commission agenda followed by its handouts (staff reports, site plans).
@@ -56,7 +61,8 @@ def save_seen(seen):
 
 
 def find_meetings(url):
-    soup = BeautifulSoup(requests.get(url, headers=HEADERS, timeout=30).text, "html.parser")
+    resp = requests.get(url, headers=HEADERS, timeout=30)
+    soup = BeautifulSoup(resp.text, "html.parser")
     meetings, seen_agendas = [], set()
     for a in soup.find_all("a", href=True):
         href = urljoin(url, a["href"])
@@ -71,7 +77,12 @@ def find_meetings(url):
             meetings.append({"agenda": href, "title": a.get_text(" ", strip=True), "handouts": []})
         elif slug.startswith("pc-handouts") and meetings and meetings[-1]:
             meetings[-1]["handouts"].append(href)
-    return [m for m in meetings if m]
+    meetings = [m for m in meetings if m]
+    if not meetings:
+        title = soup.title.get_text(strip=True) if soup.title else "(no title)"
+        print(f"DEBUG: status {resp.status_code}, page title: {title}")
+        print("DEBUG: first 300 chars:", " ".join(resp.text[:300].split()))
+    return meetings
 
 
 def download(url):
@@ -87,7 +98,7 @@ def extract_text(path):
     cache = path.with_suffix(".txt")
     if cache.exists():
         return cache.read_text(encoding="utf-8")
-    with fitz.open(path) as doc:
+    with pymupdf.open(path) as doc:
         text = "\n".join(page.get_text() for page in doc)
     cache.write_text(text, encoding="utf-8")
     return text
@@ -120,7 +131,7 @@ def send_email(sections):
     body += ("\n\n" + "-" * 50 + "\n\n").join(sections)
     msg.set_content(body)
 
-    try:  # port 465 (SSL)
+    try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=30) as smtp:
             smtp.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
             smtp.send_message(msg)
@@ -128,7 +139,7 @@ def send_email(sections):
     except Exception as e:
         print(f"  port 465 failed ({e}), trying 587...")
 
-    with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:  # port 587 (STARTTLS)
+    with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as smtp:
         smtp.ehlo()
         smtp.starttls()
         smtp.ehlo()
@@ -137,7 +148,7 @@ def send_email(sections):
 
 
 def main():
-    print("Lead finder v3.1 (email)")
+    print("Lead finder v3.2 (email)")
     missing = [n for n, v in [("ANTHROPIC_API_KEY", API_KEY), ("GMAIL_ADDRESS", GMAIL_ADDRESS),
                               ("GMAIL_APP_PASSWORD", GMAIL_APP_PASSWORD)] if not v]
     if missing:
