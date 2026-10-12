@@ -1,2 +1,5 @@
 pdfs/
 __pycache__/
+pdfs/
+manual/
+leads_state.json

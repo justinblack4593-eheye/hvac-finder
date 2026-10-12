@@ -1,0 +1,10 @@
+Lead finder v3.4 (email)
+Found 18 meetings, 3 new.
+
+Processing PC Agenda 8-26 (+1 handouts)...
+  done.
+Processing PC Agenda 8-12 (+2 handouts)...
+  done.
+Processing PC Agenda 7-22 (+1 handouts)...
+  done.
+Email sent to justin.black.4593@gmail.com with 3 meeting(s).

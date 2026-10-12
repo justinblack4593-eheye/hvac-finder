@@ -1,0 +1,62 @@
+{
+  "4040-creekside-apartments": {
+    "meeting": "PC Agenda 10-14",
+    "name": "4040 Creekside Apartments",
+    "order": 100797,
+    "stage": "Special use permit, Findings of Fact (public hearing held September 9, 2026)"
+  },
+  "copper-ridge-pud-amendment": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Copper Ridge (Copper Village / Villa Grand Traverse) PUD",
+    "order": 100797,
+    "stage": "Administrative review; deemed incomplete by staff"
+  },
+  "hickory-hills-lighting-sup-amendment": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Hickory Hills Special Use Permit Major Amendment (LED lighting replacement)",
+    "order": 100797,
+    "stage": "Public hearing (Planning Commission)"
+  },
+  "jones-property-rezoning": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Jones Property rezoning",
+    "order": 100797,
+    "stage": "Rezoning, approved (September 22, 2026)"
+  },
+  "kiley-and-mead-mixed-use-rezoning": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Kiley and Mead Properties rezoning",
+    "order": 100797,
+    "stage": "Rezoning, introduced September 22, 2026"
+  },
+  "oleson-foundation-industrial-site-condominium": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Oleson Foundation Development (industrial park site condominium)",
+    "order": 100797,
+    "stage": "Approved with conditions (Township Board, August 25, 2026)"
+  },
+  "sugar-plum-apartments": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Sugar Plum Apartments",
+    "order": 100797,
+    "stage": "Special use permit major amendment, approved with conditions"
+  },
+  "traverse-entertainment-group-residential": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Traverse Entertainment Group Residential Development",
+    "order": 100797,
+    "stage": "Conceptual review (held September 9, 2026)"
+  },
+  "white-pine-ridge-site-condominium": {
+    "meeting": "PC Agenda 10-14",
+    "name": "White Pine Ridge Site Condominium",
+    "order": 100797,
+    "stage": "Site condominium, Findings of Fact (Planning Commission)"
+  },
+  "wolverine-power-distribution-substation": {
+    "meeting": "PC Agenda 10-14",
+    "name": "Wolverine Power Distribution Substation",
+    "order": 100797,
+    "stage": "Special use permit, approved with conditions (September 23, 2026)"
+  }
+}
